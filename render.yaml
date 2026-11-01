@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: truck-routing-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DJANGO_DEBUG
+        value: "False"
+      - key: DJANGO_ALLOWED_HOSTS
+        value: truck-routing-backend.onrender.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://truck-routing-frontend.onrender.com
+      - key: ORS_API_KEY
+        sync: false
+
+  - type: web
+    name: truck-routing-frontend
+    runtime: docker
+    dockerfilePath: ./frontend/Dockerfile
+    dockerContext: ./frontend
+    dockerBuildArgs:
+      VITE_API_BASE_URL: https://truck-routing-backend.onrender.com
